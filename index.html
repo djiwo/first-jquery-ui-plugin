@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>First jquery ui plugin</title>
+  <meta name="author" content="Djiwo Weenas">
+
+
+<!-- jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+  </script>
+
+
+<!-- jquery ui -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js">
+</script>
+
+    <style type="text/css">
+  
+        .row{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+
+        .box{
+
+
+            width: 50%;
+            background-color: wheat;
+
+        }
+
+
+
+        .row{
+
+            height: 200px;
+            margin-top: 10px;
+
+        }
+
+    </style>
+
+</head>
+
+
+
+<body>
+
+    <div id="firstRow" class="row">
+
+        <div id="draggable"  class="box">
+            This box can be dragged horizontally!
+        </div>
+
+    </div>
+
+    <div id="secondRow" class="row">
+
+        <div id="resizable"  class="box">
+            This box is resizable by draggin the bottom right corner!
+        </div>
+
+    </div>
+
+
+    <div id="thirdRow" class="row">
+
+        <div id="resizableClone" class="box">
+            This box will resize by mirroring the box above!
+        </div>
+
+    </div>
+
+    <script>
+    
+
+        if(typeof jQuery == "undefined"){
+            console.log("jQuery not installed");
+        } else{
+            console.log("jQuery is installed");
+        }
+
+        $("#draggable").draggable(
+            {axis: "x" }
+        )
+
+
+        $("#resizable").resizable({
+            containment:"#secondRow",
+            alsoResize: "#resizableClone",
+            resize: function( event, ui ) {
+                if ($("#resizable").width() > 900){
+                    alert("Big enough")
+                }
+            }
+        })
+
+
+
+    </script>
+
+</body>
+
+</html>
