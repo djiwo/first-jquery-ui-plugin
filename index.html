@@ -23,6 +23,9 @@
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
+            height: 200px;
+            margin-top: 10px;
+            align-items: center;
         }
 
         .box{
@@ -30,17 +33,24 @@
 
             width: 50%;
             background-color: wheat;
+            height: 100%;
 
         }
 
 
+        
 
-        .row{
+        #dragIntoDropzone{
 
-            height: 200px;
-            margin-top: 10px;
+            width: 20%;
+            height: 80%;
 
         }
+
+        #introText{
+            text-align: center;
+        }
+
 
     </style>
 
@@ -50,27 +60,78 @@
 
 <body>
 
-    <div id="firstRow" class="row">
 
-        <div id="draggable"  class="box">
-            This box can be dragged horizontally!
+    <div id="zeroRow" class="row">
+
+        <div>
+            <h2 id="introText">
+                This page showcases some interactivity with the browser and was coded with html, css, javascript, jquery and the 'jquery
+                ui' plugin.
+            </h2>
         </div>
 
     </div>
 
-    <div id="secondRow" class="row">
+    <div class="accordion">
 
-        <div id="resizable"  class="box">
-            This box is resizable by draggin the bottom right corner!
+        <h1>Drag a box around</h1>
+        <div id="firstRow" class="row">
+
+            <div   class="box draggableHorizontal">
+                This box can be dragged horizontally!
+            </div>
+
         </div>
 
-    </div>
+        <h1>Resize a box and it's clone</h1>
+
+        <div id="resizeWrapper">
+            <div id="secondRow" class="row">
+
+                <div id="resizable"  class="box">
+                    This box is resizable by draggin the bottom right corner!
+                </div>
+
+            </div>
 
 
-    <div id="thirdRow" class="row">
+            <div id="thirdRow" class="row">
 
-        <div id="resizableClone" class="box">
-            This box will resize by mirroring the box above!
+                <div id="resizableClone" class="box">
+                    This box will resize by mirroring the box above!
+                </div>
+
+            </div>
+
+        </div>
+
+        <h1>Recognizing when a box is dropped into something</h1>
+        <div id="fourthRow" class="row">
+
+            <div id="dragIntoDropzone" class="box draggableParentContainer">
+            Drag this box into the box on the right.
+            </div>
+
+            <div id="dropzone" class="box droppable">
+                Drop the box in here
+            </div>
+
+        </div>
+
+
+        <h1>Sort the following foods from yummy to non-yummy</h1>
+        <div id="fifthRow" class="row">
+
+            <div>
+                <ul class="sortable">
+                    <li>Macaroni</li>
+                    <li>Lettuce</li>
+                    <li>Raw paprika</li>
+                    <li>Chocolate pudding</li>
+                    <li>Home made iced tea</li>
+                </ul>
+            </div>
+
         </div>
 
     </div>
@@ -84,20 +145,50 @@
             console.log("jQuery is installed");
         }
 
-        $("#draggable").draggable(
+        $(".draggableHorizontal").draggable(
             {axis: "x" }
         )
 
+
+        $(".draggableParentContainer").draggable(
+            {containment: "parent" }
+        )
+        
+
+        var resizeCounter = 0;
 
         $("#resizable").resizable({
             containment:"#secondRow",
             alsoResize: "#resizableClone",
             resize: function( event, ui ) {
-                if ($("#resizable").width() > 900){
-                    alert("Big enough")
+                if ($("#resizable").width() > 900 && resizeCounter == 0){
+                    alert("You reached a width of 900 px or higher. This alert will only show once");
+                    resizeCounter++;
+                    console.log(resizeCounter);
                 }
             }
         })
+
+        $(".droppable").droppable({
+            drop: function( event, ui ) {
+                $(this).find( "#dragIntoDropzone", 
+                    $("#dropzone").html("You dropped something"))
+            },
+
+            out: function( event, ui ) {
+                $("#dropzone").html("You pulled it back out");
+
+            
+            }
+
+        });
+
+   
+
+        $( ".accordion" ).accordion();
+
+        $(".sortable").sortable();
+
 
 
 
